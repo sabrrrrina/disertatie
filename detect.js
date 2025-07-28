@@ -49,7 +49,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
                     if (content.run) {
 
                         handledArg.push(domainArg)
-                        //await chrome.storage.local.set({ "handled": handledArg })
+                        await chrome.storage.local.set({ "handled": handledArg })
 
                         content.run();
                     }
