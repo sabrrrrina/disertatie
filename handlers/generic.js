@@ -1,9 +1,9 @@
 const keywordsByLang = {
-    en: ["reject", "refuse", "decline", "deny", "necessary", "essential", "continue without agreeing", "disagree and close", "continue without accepting", "no, thank you"],
+    en: ["reject", "refuse", "decline", "deny", "disagree", "necessary", "essential", "continue without agreeing", "continue without accepting", "disagree and close", "do not consent", "no, thank you"],
     fr: ["refuser", "décliner", "refus", "essentiel", "poursuivre sans accepter"],
     de: ["ablehnen", "verweigern", "notwendig", "fortfahren ohne zu akzeptieren"],
     es: ["rechazar", "denegar", "necesario", "continuar sin aceptar"],
-    ro: ["respinge", "refuză", "necesar", "esențial", "continuă fără a accepta", "nu, mulțumesc"]
+    ro: ["respinge", "refuză", "respingeți", "refuzați", "necesar", "esențial", "continuă fără a accepta", "continuați fără a accepta", "nu, mulțumesc"]
 };
 
 

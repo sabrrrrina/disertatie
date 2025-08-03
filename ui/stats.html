@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cookie Handler Statistics</title>
+  <link rel="stylesheet" href="stats.css">
+</head>
+<body>
+  <header>
+    <h1>🍪 Cookie Handler Statistics</h1>
+    <p id="summaryText"></p>
+  </header>
+
+  <section class="chart-container">
+    <div class="bar">
+      <div class="bar-fill" id="cookiesBar"></div>
+      <span id="cookiesLabel">Banners rejected (0)</span>
+    </div>
+
+    <div class="bar">
+      <div class="bar-fill" id="whitelistBar"></div>
+      <span id="whitelistLabel">Whitelisted sites (0)</span>
+    </div>
+  </section>
+
+  <footer>
+    <p>Statistical summary of privacy enforcement actions</p>
+  </footer>
+
+  <script src="stats.js"></script>
+</body>
+</html>

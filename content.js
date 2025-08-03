@@ -1,6 +1,7 @@
 import { oneTrustHandler, cookiebotHandler, cookieyesHandler } from "./handlers/knownProviders.js";
 import { redditHandler, flixbusHandler } from "./handlers/edgeCases.js";
 import { genericHandler } from "./handlers/generic.js";
+import { detectBanner, removeBanner } from "./handlers/fallback.js";
 
 
 function detectHandlerType(language) {
@@ -35,27 +36,46 @@ export function run() {
 
     chrome.runtime.sendMessage({ type: "getLanguage" }, function (response) {
 
-        var tld = new URL(document.location.href).tld
+        var lang = "";
 
         if (response?.language) {
-            const lang = response.language;
+            lang = response.language;
             console.log("Language received:", lang);
-
-            console.log("Checking for cookie banners on:", document.location.href);
-
-            setTimeout(function () {
-                let result = detectHandlerType(lang);
-                if (result) {
-                    console.log("success")
-                } else {
-                    console.log("fail")
-                }
-            }, 1000); // delay execution so banner is rendered
         }
 
         else {
             console.error("Failed to get language from background");
+            lang = 'en'
         }
+
+        console.log("Checking for cookie banners on:", document.location.href);
+
+        setTimeout(function () { //the magic happens
+
+            let result = detectHandlerType(lang);
+
+            if (result) {
+
+                chrome.runtime.sendMessage({
+                    type: "addToStorage", function(res) { console.log("ok button") } //don't wait for answer
+                })
+                console.log("success")
+            }
+            else { //fallback
+
+                const banner = detectBanner()
+                if (banner) {
+                    removeBanner(banner);
+                    chrome.runtime.sendMessage({
+                        type: "addToFallback", function(res) { console.log("ok banner") }
+                    })
+                }
+                else {
+                    console.log("nothing happened on this page")
+                }
+
+            }
+        }, 500); // delay execution so banner is rendered
     });
 }
 

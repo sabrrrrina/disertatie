@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cookie Tools</title>
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+
+    <button id="whitelist">
+        <img src="../icons/shield.svg" alt="whitelist icon" width="18" height="18" />
+        <span>Add page to whitelist</span>
+    </button>
+
+
+    <button id="editWhitelistBtn">
+      <img src="../icons/edit.svg" alt="edit icon" width="18" height="18" />
+      <span>Edit Whitelist</span>
+    </button>
+    <div id="whitelistEditor">
+      <textarea id="whitelistTextarea" rows="10" cols="30" placeholder="Enter one domain per line without protocol (e.g. domain.com)..."></textarea>
+      <br />
+      <button id="saveWhitelistBtn" class="wlBtn">Save</button>
+      <button id="cancelEditBtn" class="wlBtn">Cancel</button>
+    </div>
+
+    
+
+    <button id="retryBtn">
+      <img src="../icons/retry.svg" alt="retry icon" width="18" height="18" />
+      <span>Try Again</span>
+    </button>
+    <p id="retryStatus"></p>
+
+    
+    <div class="button-row">
+    <button id="statsBtn">
+      <img src="../icons/stats.svg" alt="stats icon" width="18" height="18" />
+      <span>Stats</span>
+    </button>
+
+    <button id="faqBtn">
+      <img src="../icons/faq.svg" alt="faq icon" width="18" height="18" />
+      <span>FAQ</span>
+    </button>
+    </div>
+
+
+    <button id="deleteAll">
+        <img src="../icons/brush.svg" alt="mop icon" width="18" height="18" />
+        <span>Delete all cookie settings</span>
+    </button>
+
+    <div id="deleteModal" class="modal">
+      <div class="modalContent">
+        <p>⚠️ Are you sure? This will delete <strong>all cookies</strong> and your <strong>whitelist</strong>.</p>
+        <div class="modalBtn">
+          <button id="confirmDeleteBtn">Yes, delete</button>
+          <button id="cancelDeleteBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <p id="status"></p>
+    <script src="popup.js"></script>
+  </body>
+</html>

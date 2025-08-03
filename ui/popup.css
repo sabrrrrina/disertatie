@@ -1,0 +1,261 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 16px;
+    width: 250px;
+}
+
+/* Base style for all buttons */
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    width: auto;
+    color: #000000;
+    /* jet black text */
+    border: none;
+    background-color: #f0f0f0;
+    /* default background */
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Uniform icon size and vertical alignment */
+button img {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+/* Button row helper */
+.button-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Individual button color & border overrides */
+
+/* Delete All */
+#deleteAll {
+    background-color: #e0f7fa;
+    border: 2px solid #b2dfdb;
+}
+
+#deleteAll:hover {
+    background-color: #b2ebf2;
+}
+
+/* Whitelist */
+#whitelist {
+    background-color: #e8f5e9;
+    border: 2px solid #c8e6c9;
+}
+
+#whitelist:hover {
+    background-color: #d0f0d3;
+    border-color: #a5d6a7;
+}
+
+/* Edit Whitelist */
+#editWhitelistBtn {
+    background-color: #fceaea;
+    border: 1px solid #ccc;
+}
+
+#editWhitelistBtn:hover {
+    background-color: #e6f2ff;
+    border-color: #8cc2ff;
+    color: #1a73e8;
+}
+
+/* Retry */
+#retryBtn {
+    background-color: #e0faec;
+    border: 2px solid #b2dfdb;
+    gap: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px auto 0;
+    width: auto;
+    color: #000000;
+}
+
+#retryBtn:hover {
+    background-color: #b2ebf2;
+    transform: scale(1.03);
+}
+
+/* Stats and FAQ in the same row, narrower */
+#statsBtn,
+#faqBtn {
+    flex: 1;
+    max-width: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+#statsBtn {
+    background-color: #e6f2ff;
+    border: 1px solid #8cc2ff;
+}
+
+#statsBtn:hover {
+    background-color: #cce4ff;
+    border-color: #66b3ff;
+    transform: scale(1.02);
+}
+
+#faqBtn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+
+#faqBtn:hover {
+    background-color: #e6f2ff;
+    border-color: #8cc2ff;
+    color: #1a73e8;
+    transform: scale(1.02);
+}
+
+/* Modal Save and Cancel buttons (keep original style) */
+.modalBtn button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: #000;
+    /* keep black text */
+}
+
+#confirmDeleteBtn {
+    background-color: #ff4d4f;
+    color: white;
+}
+
+#confirmDeleteBtn:hover {
+    background-color: #e64545;
+}
+
+#cancelDeleteBtn {
+    background-color: #f0f0f0;
+}
+
+#cancelDeleteBtn:hover {
+    background-color: #ddd;
+}
+
+/* Modal related styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background-color: #fff;
+    padding: 20px 24px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    max-width: 320px;
+    text-align: center;
+}
+
+.modalBtn {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+/* whitelistEditor */
+#whitelistEditor {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#whitelistEditor textarea {
+    width: 100%;
+    font-size: 14px;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+
+/* wl buttons styling */
+.wlBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    margin: 5px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: #000;
+    background-color: #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.wlBtn:hover {
+    background-color: #e6f0ff;
+    color: #1a73e8;
+}
+
+#saveWhitelistBtn {
+    background-color: #d0f5d8;
+    border: 1px solid #a5d6a7;
+    font-weight: 700;
+}
+
+#saveWhitelistBtn:hover {
+    background-color: #b0e0b1;
+}
+
+#cancelEditBtn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+
+#cancelEditBtn:hover {
+    background-color: #ddd;
+}
+
+
+#status {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #555;
+    text-align: center;
+}
