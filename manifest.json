@@ -37,6 +37,7 @@
         "detect.js",
         "content.js",         
         "handlers/*.js",      
+        "assistant/*.js",
         "icons/*.png"        
       ],
       "matches": ["<all_urls>"] 

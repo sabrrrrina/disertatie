@@ -145,9 +145,11 @@ document.getElementById("cancelEditBtn").addEventListener("click", () => {
 
 
 
+// debug stuff
+
 document.getElementById("retryBtn").addEventListener("click", async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const status = document.getElementById("retryStatus");
+    const status = document.getElementById("status");
     status.textContent = "Running script again...";
 
     try {
@@ -167,6 +169,33 @@ document.getElementById("retryBtn").addEventListener("click", async () => {
 });
 
 
+document.getElementById("debugBtn").addEventListener("click", async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const domain = new URL(tab.url).hostname.replace(/^www\./, "");
+    const status = document.getElementById("status");
+
+    try {
+        let srvRes = await fetch("http://localhost:8080/report", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ domain: domain })
+        });
+        srvRes = await srvRes.json()
+        console.log("srv res:", srvRes.msg)
+
+        status.textContent = srvRes.msg;
+        setTimeout(() => { status.textContent = "" }, 2000) //dispare dupa 2 sec
+    }
+    catch (ex) {
+        status.textContent = "server fetch error";
+        setTimeout(() => { status.textContent = "" }, 2000) //dispare dupa 2 sec
+    }
+});
+
+
+
+// cool extra features
+
 document.getElementById("statsBtn").addEventListener("click", () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("./ui/stats.html") });
 });
@@ -174,6 +203,42 @@ document.getElementById("statsBtn").addEventListener("click", () => {
 
 document.getElementById("faqBtn").addEventListener("click", () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("./ui/faq.html") });
+});
+
+
+document.getElementById("llmBtn").addEventListener("click", async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    const status = document.getElementById("status");
+    status.textContent = "getting in touch with the assistant";
+
+
+    try {
+        // Run only HTML parsing in the tab 
+        const [{ result }] = await chrome.scripting.executeScript({ // inject the script into page and CAN ACCESS IT (no need for eventlisteners)
+            target: { tabId: tab.id },
+            function: async () => {
+                const parser = await import(chrome.runtime.getURL("../assistant/htmlparser.js"));
+                const summary = parser.extractPageSummary?.()
+                console.log("summary:", summary)
+                return summary; // Example short summary
+            }
+        });
+
+        console.log("above result:", result);
+
+        //Now run the LLM from the popup context
+        const { getCompletion } = await import(chrome.runtime.getURL("../assistant/openrouter.js"));
+        const llmResp = await getCompletion(result);
+
+        console.log("LLM says:", llmResp);
+        status.textContent = llmResp;
+    }
+    catch (err) {
+        console.error("Error:", err);
+        status.textContent = "Failed to assist.";
+    }
+
 });
 
 

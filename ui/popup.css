@@ -36,7 +36,13 @@ button img {
 }
 
 /* Button row helper */
-.button-row {
+.button-debug-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.button-extras-row {
     display: flex;
     gap: 10px;
     justify-content: center;
@@ -78,7 +84,8 @@ button img {
 }
 
 /* Retry */
-#retryBtn {
+#retryBtn,
+#debugBtn {
     background-color: #e0faec;
     border: 2px solid #b2dfdb;
     gap: 6px;
@@ -92,7 +99,8 @@ button img {
     color: #000000;
 }
 
-#retryBtn:hover {
+#retryBtn:hover,
+#debugBtn:hover {
     background-color: #b2ebf2;
     transform: scale(1.03);
 }
@@ -108,26 +116,21 @@ button img {
     padding: 10px 14px;
 }
 
-#statsBtn {
+#statsBtn,
+#faqBtn {
     background-color: #e6f2ff;
     border: 1px solid #8cc2ff;
 }
 
-#statsBtn:hover {
+#statsBtn:hover,
+#faqBtn:hover {
     background-color: #cce4ff;
     border-color: #66b3ff;
     transform: scale(1.02);
 }
 
-#faqBtn {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-}
-
-#faqBtn:hover {
-    background-color: #e6f2ff;
-    border-color: #8cc2ff;
-    color: #1a73e8;
+#llmBtn:hover {
+    background-color: #f3d965;
     transform: scale(1.02);
 }
 
@@ -252,10 +255,10 @@ button img {
     background-color: #ddd;
 }
 
-
+/*un singur status-element pentru toate actiunile*/
 #status {
     margin-top: 12px;
     font-size: 13px;
-    color: #555;
+    color: #000000;
     text-align: center;
 }

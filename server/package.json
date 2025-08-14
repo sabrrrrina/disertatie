@@ -1,0 +1,16 @@
+{
+  "name": "cookie_handler_server",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
+  },
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

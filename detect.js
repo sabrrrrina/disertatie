@@ -2,8 +2,30 @@
 
 console.log("Service worker loaded.");
 
+//global listeners with async responses
+
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    if (message.type === "getLanguage") {
+        const tabId = sender.tab?.id;
+        if (!tabId) {
+            sendResponse({ language: null });
+            return;
+        }
+        chrome.tabs.detectLanguage(tabId, function (lgResp) {
+            sendResponse({ language: lgResp });
+        });
+        return true; //keeps the message channel open for async response
+    }
+});
+
+
 // Listen for when a tab is updated (e.g. a new page loads)
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+
+    // Only run if the tab has finished loading and is a regular web page
+    if (!(changeInfo.status === 'complete' && tab?.url.startsWith('http'))) {
+        return;
+    }
 
     const urlObj = new URL(tab.url);
     const hostname = urlObj.hostname;
@@ -22,64 +44,50 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         return;
     }
 
-    // Only run if the tab has finished loading and is a regular web page
-    if (changeInfo.status === 'complete' && tab?.url.startsWith('http')) {
+    chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+        //handle storage
+        if (message.type === "addToStorage") {
+            handled.push(domain)
+            chrome.storage.local.set({ "handled": handled }).then(() => {
+                console.log(`host ${domain} added to storage`);
+            });
+        }
+        if (message.type === "addToFallback") {
+            fallback.push(domain)
+            chrome.storage.local.set({ "fallback": fallback }).then(() => {
+                console.log(`host ${domain} added to fallback`);
+            });
+        }
+    });
 
 
-        chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-            if (message.type === "getLanguage") {
-                const tabId = sender.tab?.id;
-                if (domain == "ro.shein.com") {
-                    sendResponse({ language: "ro" });
+    try {
+        // Inject the content script into the active tab
+        await chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            function: async function () {
+                // chrome.runtime.getURL for getting the correct path to your extension file
+                const content = await import(chrome.runtime.getURL("./content.js")); // load content.js as a module // cred ca se poate mai simplu tho
+                if (content.run) {
+                    content.run();
                 }
-                if (!tabId) {
-                    sendResponse({ language: null });
-                    return;
+                if (content.extractPageSummaryForLLM) {
+                    console.log("TEXT MAXIM")
+                    let da = extractPageSummaryForLLM()
+                    console.log("da!", da)
                 }
-                chrome.tabs.detectLanguage(tabId, function (lgResp) {
-                    sendResponse({ language: lgResp });
-                });
-                return true; //keeps the message channel open for async response
-            }
-
-            //handle storage
-            if (message.type === "addToStorage") {
-                handled.push(domain)
-                chrome.storage.local.set({ "handled": handled }).then(() => {
-                    console.log(`host ${domain} added to storage`);
-                });
-            }
-            if (message.type === "addToFallback") {
-                fallback.push(domain)
-                chrome.storage.local.set({ "fallback": fallback }).then(() => {
-                    console.log(`host ${domain} added to fallback`);
-                });
+                else {
+                    console.warn("[CS] content.js loaded but no 'run' function exported.");
+                }
             }
         });
 
-
-        try {
-            // Inject the content script into the active tab
-            await chrome.scripting.executeScript({
-                target: { tabId: tabId },
-                function: async function () {
-                    // chrome.runtime.getURL for getting the correct path to your extension file
-                    const content = await import(chrome.runtime.getURL("./content.js")); // load content.js as a module // cred ca se poate mai simplu tho
-                    if (content.run) {
-                        content.run();
-                    }
-                    else {
-                        console.warn("[CS] content.js loaded but no 'run' function exported.");
-                    }
-                }
-            });
-
-            console.log(`Content script injected into tab`);
-        }
-        catch (error) {
-            console.error(`Failed to inject content script into tab ${tabId}:`, error);
-        }
+        console.log(`Content script injected into tab`);
     }
+    catch (error) {
+        console.error(`Failed to inject content script into tab ${tabId}:`, error);
+    }
+
 });
 
 /*storage/cache: { wl: [dom1, dom2, ...], handled: [dom3, dom4, etc..], fallback: [dom5] } */
