@@ -42,10 +42,19 @@ button img {
     justify-content: center;
 }
 
+.button-debug-row button {
+    margin: 0;
+    /* let gap handle spacing */
+}
+
 .button-extras-row {
     display: flex;
     gap: 10px;
     justify-content: center;
+}
+
+.button-extras-row button {
+    margin: 0;
 }
 
 /* Individual button color & border overrides */
@@ -94,7 +103,6 @@ button img {
     font-weight: 500;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 10px auto 0;
     width: auto;
     color: #000000;
 }
@@ -114,10 +122,6 @@ button img {
     font-weight: 500;
     border-radius: 10px;
     padding: 10px 14px;
-}
-
-#statsBtn,
-#faqBtn {
     background-color: #e6f2ff;
     border: 1px solid #8cc2ff;
 }
@@ -133,6 +137,28 @@ button img {
     background-color: #f3d965;
     transform: scale(1.02);
 }
+
+
+.block-section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 14px;
+}
+
+#blockBtn:hover {
+    background-color: #ff7d7d;
+    transform: scale(1.02);
+}
+
+label {
+    color: #000;
+    font-size: 13px;
+}
+
+
+/* elements that appear after pressing buttons */
 
 /* Modal Save and Cancel buttons (keep original style) */
 .modalBtn button {

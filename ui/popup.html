@@ -31,28 +31,10 @@
       <img src="../icons/retry.svg" alt="retry icon" width="18" height="18" />
       <span>Try Again</span>
     </button>
-    <p id="retryStatus"></p>
 
     <button id="debugBtn">
       <img src="../icons/debug.svg" alt="retry icon" width="18" height="18" />
-      <span>Report Fail</span>
-    </button>
-    </div>
-    
-    <div class="button-extras-row">
-    <button id="statsBtn">
-      <img src="../icons/stats.svg" alt="stats icon" width="18" height="18" />
-      <span>Stats</span>
-    </button>
-
-    <button id="llmBtn">
-      <img src="../icons/robot.svg" alt="llm icon" width="18" height="18" />
-    <span>Page Info</span>
-    </button>
-
-    <button id="faqBtn">
-      <img src="../icons/faq.svg" alt="faq icon" width="18" height="18" />
-      <span>FAQ</span>
+      <span>Debug</span>
     </button>
     </div>
 
@@ -72,6 +54,48 @@
       </div>
     </div>
 
+
+    <div class="button-extras-row">
+    <button id="statsBtn">
+      <img src="../icons/stats.svg" alt="stats icon" width="18" height="18" />
+      <span>Stats</span>
+    </button>
+
+    <button id="llmBtn">
+      <img src="../icons/robot.svg" alt="llm icon" width="18" height="18" />
+    <span>Page Info</span>
+    </button>
+
+    <button id="faqBtn">
+      <img src="../icons/faq.svg" alt="faq icon" width="18" height="18" />
+      <span>FAQ</span>
+    </button>
+    </div>
+
+
+    <div class="block-section">
+      <h3>Block content</h3>
+      <label><input type="checkbox" id="violence" color="black"> Violence</label><br>
+      <label><input type="checkbox" id="hate"> Hate/Abuse</label><br> <!--gambling, drugs/alcohol-->
+      <label><input type="checkbox" id="gambling"> Gambling</label><br> 
+      <label><input type="checkbox" id="drugs"> Drugs/Alcohol </label><br>
+      <label><input type="checkbox" id="diet"> Diet </label><br>
+   
+      <section>
+        <h3>Blocking Mode</h3>
+        <label>
+          <input type="radio" name="blockMode" value="keywords" checked>
+          Keyword-based
+        </label>
+        <label>
+          <input type="radio" name="blockMode" value="ai">
+          AI-assisted
+        </label>
+      </section>
+      
+      <button id="blockBtn">Apply Block</button>
+  </div>
+    
     <p id="status"></p>
     <script src="popup.js"></script>
   </body>

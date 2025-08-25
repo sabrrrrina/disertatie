@@ -238,8 +238,77 @@ document.getElementById("llmBtn").addEventListener("click", async () => {
         console.error("Error:", err);
         status.textContent = "Failed to assist.";
     }
+});
+
+
+// - elefant - //
+document.getElementById("blockBtn").addEventListener("click", async () => {
+
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    const selected = {
+        violence: document.getElementById("violence").checked,
+        hate: document.getElementById("hate").checked,
+        gambling: document.getElementById("gambling").checked,
+        drugs: document.getElementById("drugs").checked,
+        diet: document.getElementById("diet").checked,
+    };
+    console.log("frontend selected rules:", selected)
+
+    await chrome.storage.local.set({ blockrules: selected });
+
+    const { blockMode = "keywords" } = await chrome.storage.local.get("blockMode");
+
+    try {
+        await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: async (modeArg, rulesArg) => {
+                console.log("helllo??", modeArg, rulesArg)
+                const { injectBlocker } = await import(chrome.runtime.getURL("../handlers/blockInject.js"));
+                injectBlocker(modeArg, rulesArg)
+            },
+            args: [blockMode, selected],
+        });
+        console.log("Block rules injected into tab");
+    }
+    catch (ex) {
+        console.error("Failed to inject block rules into tab: ", ex);
+    }
+
+    const status = document.getElementById("status");
+    status.textContent = "Blocking applied!";
 
 });
+
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const { blockrules = {} } = await chrome.storage.local.get("blockrules");
+
+    // Loop over the checkboxes and set their state from storage
+    for (const [rule, enabled] of Object.entries(blockrules)) {
+        const input = document.getElementById(rule);
+        if (input) {
+            input.checked = !!enabled;
+        }
+    }
+});
+
+// Save block mode when changed
+document.querySelectorAll("input[name='blockMode']").forEach(radio => {
+    radio.addEventListener("change", async (e) => {
+        await chrome.storage.local.set({ blockMode: e.target.value });
+        console.log("Block mode set to:", e.target.value);
+    });
+});
+
+// Restore on popup open
+(async () => {
+    const { blockMode = "keywords" } = await chrome.storage.local.get("blockMode");
+    document.querySelector(`input[name = "blockMode"][value = "${blockMode}"]`).checked = true;
+})();
+
+
 
 
 //for logs - INSPECT POPUP

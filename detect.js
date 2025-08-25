@@ -36,8 +36,30 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     const handled = cache.handled || [];
     const whitelist = cache.whitelist || [];
     const fallback = cache.fallback || []; //this is just for stats, action takes place each time page is visited
+    const blockrules = cache.blockrules || {};
+    const blockMode = cache.blockMode || "keywords";
 
-    console.log("handled:", handled, "whitelist:", whitelist, "fallback:", fallback)
+    console.log("handled:", handled, "whitelist:", whitelist, "fallback:", fallback, "blockrules:", blockrules, "blockmode:", blockMode)
+    let trueRules = Object.keys(blockrules).filter(key => blockrules[key])
+    //partea de content blocker, pt ca nu vrei return daca cookie was handled
+    if (trueRules.length) {  //exista o regula bifata si salvata via btn
+        console.log("avem reguli:", trueRules)
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                func: async (modeArg, rulesArg) => {
+                    console.log("helllo??", modeArg, rulesArg)
+                    const { injectBlocker } = await import(chrome.runtime.getURL("./handlers/blockInject.js"));
+                    injectBlocker(modeArg, rulesArg)
+                },
+                args: [blockMode, blockrules],
+            });
+            console.log("Block rules injected into tab");
+        }
+        catch (ex) {
+            console.error("Failed to inject block rules into tab: ", ex);
+        }
+    }
 
     if (handled.includes(domain) || whitelist.includes(domain)) { //la fallback I have to take the action each time
         console.log("Domain handled or whitelisted", domain);
@@ -47,13 +69,13 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         //handle storage
         if (message.type === "addToStorage") {
-            handled.push(domain)
+            handled.indexOf(domain) == -1 ? handled.push(domain) : null
             chrome.storage.local.set({ "handled": handled }).then(() => {
                 console.log(`host ${domain} added to storage`);
             });
         }
         if (message.type === "addToFallback") {
-            fallback.push(domain)
+            fallback.indexOf(domain) == -1 ? fallback.push(domain) : null
             chrome.storage.local.set({ "fallback": fallback }).then(() => {
                 console.log(`host ${domain} added to fallback`);
             });
@@ -71,18 +93,12 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
                 if (content.run) {
                     content.run();
                 }
-                if (content.extractPageSummaryForLLM) {
-                    console.log("TEXT MAXIM")
-                    let da = extractPageSummaryForLLM()
-                    console.log("da!", da)
-                }
                 else {
                     console.warn("[CS] content.js loaded but no 'run' function exported.");
                 }
             }
         });
-
-        console.log(`Content script injected into tab`);
+        console.log("Content script injected into tab");
     }
     catch (error) {
         console.error(`Failed to inject content script into tab ${tabId}:`, error);
