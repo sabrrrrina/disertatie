@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "My first cookie handler",
+  "name": "CookieShield",
   "version": "1.0",
   "description": "Rejects optional cookies from websites.",
   "permissions": [
