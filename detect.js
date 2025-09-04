@@ -49,7 +49,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
                 target: { tabId: tabId },
                 func: async (modeArg, rulesArg) => {
                     console.log("helllo??", modeArg, rulesArg)
-                    const { injectBlocker } = await import(chrome.runtime.getURL("./handlers/blockInject.js"));
+                    const { injectBlocker } = await import(chrome.runtime.getURL("./block/blockInject.js"));
                     injectBlocker(modeArg, rulesArg)
                 },
                 args: [blockMode, blockrules],

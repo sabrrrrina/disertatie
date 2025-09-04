@@ -6,6 +6,24 @@ body {
     width: 250px;
 }
 
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* spacing between icon and text */
+}
+
+.header-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.header-title {
+    font-size: 17px;
+    /* lasa-l asa sa fie centrat */
+    margin: 0;
+}
+
 /* Base style for all buttons */
 button {
     display: flex;
@@ -89,7 +107,6 @@ button img {
 #editWhitelistBtn:hover {
     background-color: #e6f2ff;
     border-color: #8cc2ff;
-    color: #1a73e8;
 }
 
 /* Retry */
@@ -138,25 +155,15 @@ button img {
     transform: scale(1.02);
 }
 
-
-.block-section {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 14px;
+#blockEditor {
+    background-color: #eadaff;
+    border: 1px solid #ccc;
 }
 
-#blockBtn:hover {
-    background-color: #ff7d7d;
+#blockEditor:hover {
+    background-color: #b488ff;
     transform: scale(1.02);
 }
-
-label {
-    color: #000;
-    font-size: 13px;
-}
-
 
 /* elements that appear after pressing buttons */
 
@@ -240,7 +247,8 @@ label {
 
 
 /* wl buttons styling */
-.wlBtn {
+.wlBtn,
+.blockBtn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -257,29 +265,45 @@ label {
     transition: background-color 0.2s ease;
 }
 
-.wlBtn:hover {
-    background-color: #e6f0ff;
-    color: #1a73e8;
-}
-
-#saveWhitelistBtn {
+#saveWhitelistBtn,
+#saveBlockBtn {
     background-color: #d0f5d8;
     border: 1px solid #a5d6a7;
     font-weight: 700;
 }
 
-#saveWhitelistBtn:hover {
+#saveWhitelistBtn:hover,
+#saveBlockBtn:hover {
     background-color: #b0e0b1;
 }
 
-#cancelEditBtn {
+#cancelEditBtn,
+#cancelBlockBtn {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
 }
 
-#cancelEditBtn:hover {
+#cancelEditBtn:hover,
+#cancelBlockBtn:hover {
     background-color: #ddd;
 }
+
+
+/* block content styling */
+.block-section {
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 14px;
+}
+
+label {
+    color: #000;
+    font-size: 13px;
+}
+
 
 /*un singur status-element pentru toate actiunile*/
 #status {

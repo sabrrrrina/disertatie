@@ -241,10 +241,18 @@ document.getElementById("llmBtn").addEventListener("click", async () => {
 });
 
 
-// - elefant - //
-document.getElementById("blockBtn").addEventListener("click", async () => {
+
+// - BLOCK CONTENT FEATURE - //
+
+document.getElementById("blockEditor").addEventListener("click", async () => {
+    document.getElementById("blockSection").style.display = "block" //nu flex
+    hideElement("blockEditor");
+})
+
+document.getElementById("saveBlockBtn").addEventListener("click", async () => {
 
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const status = document.getElementById("status");
 
     const selected = {
         violence: document.getElementById("violence").checked,
@@ -264,23 +272,25 @@ document.getElementById("blockBtn").addEventListener("click", async () => {
             target: { tabId: tab.id },
             func: async (modeArg, rulesArg) => {
                 console.log("helllo??", modeArg, rulesArg)
-                const { injectBlocker } = await import(chrome.runtime.getURL("../handlers/blockInject.js"));
+                const { injectBlocker } = await import(chrome.runtime.getURL("../block/blockInject.js"));
+                console.log("blockinject imported")
                 injectBlocker(modeArg, rulesArg)
             },
             args: [blockMode, selected],
         });
         console.log("Block rules injected into tab");
+        status.textContent = "Blocking applied!";
     }
     catch (ex) {
         console.error("Failed to inject block rules into tab: ", ex);
     }
 
-    const status = document.getElementById("status");
-    status.textContent = "Blocking applied!";
-
 });
 
-
+document.getElementById("cancelBlockBtn").addEventListener("click", () => {
+    hideElement("blockSection");
+    showElement("blockEditor");
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
     const { blockrules = {} } = await chrome.storage.local.get("blockrules");
